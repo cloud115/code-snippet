@@ -83,14 +83,6 @@
 node 01.Observer.js
 ```
 
-## 改进建议
-
-1. **01.Observer.js**：修改removeObserver方法，使用对象引用或唯一ID查找观察者，避免同名观察者被错误移除。
-2. **02.PubSub.js**：修改notify方法，传递最新的消息而不是所有消息，或者根据业务需求调整逻辑。
-3. **03.DeepClone.js**：取消对Symbol属性处理的注释，完善深拷贝功能。
-4. **10.Concurrency.js**：优化并发控制逻辑，处理可能的边界情况，如空数组、负数并发数等。
-5. **14.Flat.js**：考虑使用更简洁的实现方式，如使用reduce和concat的组合。
-
 ## 许可证
 
 MIT License

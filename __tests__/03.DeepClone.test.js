@@ -78,4 +78,32 @@ describe('Deep Clone', () => {
     expect(cloned).not.toBe(person);
     expect(cloned.greet()).toBe('Hello, John');
   });
+
+  test('should clone objects with Symbol properties', () => {
+    const symbolKey = Symbol('test');
+    const obj = {
+      a: 1,
+      [symbolKey]: 'symbol value'
+    };
+    const cloned = deepCopy(obj);
+    expect(cloned).toEqual(obj);
+    expect(cloned).not.toBe(obj);
+    expect(cloned[symbolKey]).toBe('symbol value');
+  });
+
+  test('should clone objects with multiple Symbol properties', () => {
+    const symbolKey1 = Symbol('test1');
+    const symbolKey2 = Symbol('test2');
+    const obj = {
+      a: 1,
+      [symbolKey1]: 'symbol value 1',
+      [symbolKey2]: { nested: 'value' }
+    };
+    const cloned = deepCopy(obj);
+    expect(cloned).toEqual(obj);
+    expect(cloned).not.toBe(obj);
+    expect(cloned[symbolKey1]).toBe('symbol value 1');
+    expect(cloned[symbolKey2]).toEqual({ nested: 'value' });
+    expect(cloned[symbolKey2]).not.toBe(obj[symbolKey2]);
+  });
 });

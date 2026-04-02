@@ -24,7 +24,10 @@ class PubSub {
   notify(type) {
     const messages = this.messages[type];
     const listeners = this.listeners[type] || [];
-    listeners.forEach(cb => cb(messages));
+    if (messages && messages.length > 0) {
+      const latestMessage = messages[messages.length - 1];
+      listeners.forEach(cb => cb(latestMessage));
+    }
   }
 }
 

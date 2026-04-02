@@ -19,17 +19,30 @@ describe('Publish-Subscribe Pattern', () => {
     expect(pubsub.listeners[type]).toContain(mockCallback);
   });
 
-  test('PubSub should notify subscribers with messages', () => {
+  test('PubSub should notify subscribers with the latest message', () => {
     const pubsub = new PubSub();
     const type = 'TEST_TYPE';
-    const message = 'test message';
+    const message1 = 'test message 1';
+    const message2 = 'test message 2';
     const mockCallback = jest.fn();
     
-    pubsub.publish(type, message);
+    pubsub.publish(type, message1);
+    pubsub.publish(type, message2);
     pubsub.subscribe(type, mockCallback);
     pubsub.notify(type);
     
-    expect(mockCallback).toHaveBeenCalledWith([message]);
+    expect(mockCallback).toHaveBeenCalledWith(message2); // 只传递最新的消息
+  });
+
+  test('PubSub should not notify subscribers if no messages', () => {
+    const pubsub = new PubSub();
+    const type = 'TEST_TYPE';
+    const mockCallback = jest.fn();
+    
+    pubsub.subscribe(type, mockCallback);
+    pubsub.notify(type);
+    
+    expect(mockCallback).not.toHaveBeenCalled(); // 没有消息时不调用回调
   });
 
   test('Publisher should publish messages through PubSub', () => {

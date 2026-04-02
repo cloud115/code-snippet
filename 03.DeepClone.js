@@ -72,14 +72,14 @@ function deepCopy(source) {
     }
 
     // 针对以 Symbol 作为 key 的属性
-    // const symbolKeys = Object.getOwnPropertySymbols(input)
-    // if (symbolKeys.length) {
-    //   for (let i = 0; i < symbolKeys.length; i++) {
-    //     if (input.propertyIsEnumerable(symbolKeys[i])) {
-    //       output[symbolKeys[i]] = copy(input[symbolKeys[i]])
-    //     }
-    //   }
-    // }
+    const symbolKeys = Object.getOwnPropertySymbols(input);
+    if (symbolKeys.length) {
+      for (let i = 0; i < symbolKeys.length; i++) {
+        if (input.propertyIsEnumerable(symbolKeys[i])) {
+          output[symbolKeys[i]] = copy(input[symbolKeys[i]]);
+        }
+      }
+    }
 
     return output;
   }

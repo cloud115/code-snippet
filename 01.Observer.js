@@ -11,8 +11,10 @@ class Subject {
   }
 
   removeObserver(observer) {
-    const index = this.observers.findIndex(_ => _.name === observer.name);
-    this.observers.splice(index, 1);
+    const index = this.observers.findIndex(_ => _ === observer);
+    if (index !== -1) {
+      this.observers.splice(index, 1);
+    }
   }
 
   notifyObservers(message) {

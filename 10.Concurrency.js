@@ -9,29 +9,57 @@ function query(timeout) {
 }
 
 function concurrency(requestArr = [], count = 3) {
-  let i = count;
-  const concurrencyArr = requestArr.slice(0, count).map(createNewRequest);
-
-  run();
-
-  function createNewRequest(request) {
-    const newRequest = request().then(res => {
-      concurrencyArr.splice(concurrencyArr.indexOf(newRequest), 1);
-      return res;
-    });
-    return newRequest;
+  // 处理边界情况
+  if (!Array.isArray(requestArr)) {
+    return Promise.resolve([]);
   }
-
-  function run() {
-    if (!concurrencyArr.length) return;
-    Promise.race(concurrencyArr).then(res => {
-      console.log('弹出：' + res);
-      if (i < requestArr.length) {
-        concurrencyArr.push(createNewRequest(requestArr[i++]));
-      }
-      run();
-    });
+  
+  if (requestArr.length === 0) {
+    return Promise.resolve([]);
   }
+  
+  // 处理负数或 0 并发数
+  if (count <= 0) {
+    count = 1;
+  }
+  
+  let i = 0;
+  const concurrencyArr = [];
+  const results = [];
+  let completed = 0;
+  
+  return new Promise((resolve) => {
+    // 启动初始并发任务
+    while (i < Math.min(count, requestArr.length)) {
+      concurrencyArr.push(createNewRequest(i++));
+    }
+
+    function createNewRequest(index) {
+      const promise = requestArr[index]().then(res => {
+        results[index] = res;
+        completed++;
+      
+        // 移除完成的请求
+        const currentIndex = concurrencyArr.indexOf(promise);
+        if (currentIndex !== -1) {
+          concurrencyArr.splice(currentIndex, 1);
+        }
+      
+        // 启动新的请求
+        if (i < requestArr.length) {
+          concurrencyArr.push(createNewRequest(i++));
+        }
+      
+        // 所有请求完成
+        if (completed === requestArr.length) {
+          resolve(results);
+        }
+      
+        return res;
+      });
+      return promise;
+    }
+  });
 }
 
 module.exports = { concurrency, query };

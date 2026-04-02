@@ -3,7 +3,7 @@ function debounce(fn, wait, immediate = false) {
   let isInvoke = false;
 
   function _debounce() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (timer) clearTimeout(timer);
       if (immediate && !isInvoke) {
         const result = fn.apply(this, arguments);
