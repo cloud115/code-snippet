@@ -1,15 +1,15 @@
 // 实现一个 call
 
 function Call(fn, ctx, ...args) {
-  ctx.fn = fn
-  const res = ctx.fn(...args)
-  delete ctx.fn
-  return res
+  // 处理 null 和 undefined 上下文
+  if (ctx === null || ctx === undefined) {
+    ctx = globalThis;
+  }
+  
+  ctx.fn = fn;
+  const res = ctx.fn(...args);
+  delete ctx.fn;
+  return res;
 }
 
-function bar(val) {
-  console.log(val)
-  console.log(this.value)
-}
-
-Call(bar, { value: 123 }, 456)
+module.exports = Call;

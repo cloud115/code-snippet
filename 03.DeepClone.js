@@ -9,64 +9,64 @@
  */
 
 function deepCopy(source) {
-  const weakmap = new WeakMap()
+  const weakmap = new WeakMap();
 
   // 判断是否为数组
   function isArray(val) {
-    return Object.prototype.toString.call(val) === '[object Array]'
+    return Object.prototype.toString.call(val) === '[object Array]';
   }
 
   // 判断是否是引用类型
   function isObject(val) {
-    return (val !== null && typeof val === 'object') || typeof val === 'function'
+    return (val !== null && typeof val === 'object') || typeof val === 'function';
   }
 
   function copy(input) {
     // 如果是原始类型，直接返回
-    if (!isObject(input)) return input
+    if (!isObject(input)) return input;
 
     // 针对 Date 和 RegExp 类型处理下
-    if (input instanceof Date) return new Date(input)
-    if (input instanceof RegExp) return new RegExp(input)
+    if (input instanceof Date) return new Date(input);
+    if (input instanceof RegExp) return new RegExp(input);
 
     // 针对三大包装类型处理下
     if (Object.prototype.toString.call(input) === '[object String]') {
-      return Object(String.prototype.valueOf.call(input))
+      return Object(String.prototype.valueOf.call(input));
     } else if (Object.prototype.toString.call(input) === '[object Number]') {
-      return Object(Number.prototype.valueOf.call(input))
+      return Object(Number.prototype.valueOf.call(input));
     } else if (Object.prototype.toString.call(input) === '[object Boolean]') {
-      return Object(Boolean.prototype.valueOf.call(input))
+      return Object(Boolean.prototype.valueOf.call(input));
     }
 
     // 针对循环引用处理下
-    if (weakmap.has(input)) return weakmap.get(input)
+    if (weakmap.has(input)) return weakmap.get(input);
 
-    let output
+    let output;
     if (isArray(input)) {
-      output = []
+      output = [];
     } else if (input instanceof Map) {
-      output = new Map()
+      output = new Map();
     } else if (input instanceof Set) {
-      output = new Set()
+      output = new Set();
     } else {
-      output = Object.create(Object.getPrototypeOf(input)) // 拷贝原型对象
+      output = Object.create(Object.getPrototypeOf(input)); // 拷贝原型对象
     }
 
-    weakmap.set(input, output)
+    weakmap.set(input, output);
 
     if (input instanceof Map) {
       input.forEach(function (val, key) {
-        output.set(copy(key), copy(val))
-      })
+        output.set(copy(key), copy(val));
+      });
     } else if (input instanceof Set) {
       input.forEach(function (val) {
-        output.add(copy(val))
-      })
+        output.add(copy(val));
+      });
     } else {
       // for...in 遍历对象或数组本身及原型链上可遍历属性、hasOwnProperty 限制只遍历本身属性
       for (const key in input) {
         if (input.hasOwnProperty(key)) {
-          output[key] = copy(input[key])
+          output[key] = copy(input[key]);
         }
       }
     }
@@ -81,8 +81,10 @@ function deepCopy(source) {
     //   }
     // }
 
-    return output
+    return output;
   }
 
-  return copy(source)
+  return copy(source);
 }
+
+module.exports = deepCopy;

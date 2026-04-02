@@ -14,22 +14,22 @@ const obj = {
   foo: 1,
   bar: 2,
   get baz() {
-    return this.foo + this.bar
+    return this.foo + this.bar;
   },
   set value(val) {
-    return (this.foo = val)
+    return (this.foo = val);
   }
-}
+};
 
-console.log(Reflect.get(obj, 'baz'))
+console.log(Reflect.get(obj, 'baz'));
 console.log(Reflect.get(obj, 'baz', {
   foo: 10,
   bar: 20
-})) // 传入 receiver 改变 getter 内部 this 指向
+})); // 传入 receiver 改变 getter 内部 this 指向
 
-console.log(Reflect.set(obj, 'value', 100))
-console.log(obj.foo)
+console.log(Reflect.set(obj, 'value', 100));
+console.log(obj.foo);
 console.log(Reflect.set(obj, 'value', 200, {
   foo: 1
-})) // 传入 receiver 改变 setter 内部 this 指向
-console.log(obj.foo)
+})); // 传入 receiver 改变 setter 内部 this 指向
+console.log(obj.foo);

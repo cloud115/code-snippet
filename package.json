@@ -1,8 +1,8 @@
 {
   "name": "code-snippet",
   "version": "1.0.0",
-  "description": "## 项目概述",
-  "main": "01.Observer.js",
+  "description": "",
+  "main": "",
   "scripts": {
     "test": "jest",
     "docs": "jsdoc -r . -d docs",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^10.1.0",
+    "globals": "^17.4.0",
     "jest": "^30.3.0",
     "jsdoc": "^4.0.5"
   }

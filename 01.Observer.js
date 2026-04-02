@@ -3,37 +3,35 @@
 // 被观察者
 class Subject {
   constructor() {
-    this.observers = []
+    this.observers = [];
   }
 
   addObserver(observer) {
-    this.observers.push(observer)
+    this.observers.push(observer);
   }
 
   removeObserver(observer) {
-    const index = this.observers.findIndex(_ => _.name === observer.name)
-    this.observers.splice(index, 1)
+    const index = this.observers.findIndex(_ => _.name === observer.name);
+    this.observers.splice(index, 1);
   }
 
   notifyObservers(message) {
-    this.observers.forEach(observer => observer.notified(message))
+    this.observers.forEach(observer => observer.notified(message));
   }
 }
 
 // 观察者
 class Observer {
   constructor(name, subject) {
-    this.name = name
+    this.name = name;
     if (subject) {
-      subject.addObserver(this)
+      subject.addObserver(this);
     }
   }
 
   notified(message) {
-    console.log(this.name, 'get message', message)
+    console.log(this.name, 'get message', message);
   }
 }
 
-const subject = new Subject()
-const observer = new Observer('observer', subject)
-subject.notifyObservers('hello observer')
+module.exports = { Subject, Observer };
