@@ -58,7 +58,6 @@ class _Promise_ {
     onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err; };
     const thenPromise = new _Promise_((resolve, reject) => {
       const resolvePromise = (callback) => {
-        console.log(this);
         /**
          * setTimeout 的作用（只是用 setTimeout 暂代，因为 Promise 是异步微任务，而 setTimeout 是异步宏任务）
          * 1.保证 thenPromise 的可得性（如果上一步 Promise 中无异步操作，将会导致这里 thenPromise 尚未定义完成，就调用 resolvePromise）
@@ -96,3 +95,5 @@ class _Promise_ {
     return thenPromise;
   }
 }
+
+module.exports = { _Promise_ };
